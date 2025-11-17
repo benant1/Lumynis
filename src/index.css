@@ -1,0 +1,57 @@
+/* Couleurs Lumynis personnalisées */
+:root {
+  --lumynis-white: #FFFFFF;
+  --lumynis-gold: #FFD700;
+  --lumynis-blue: #0F1C4D; /* bleu nuit profond */
+  --lumynis-lightblue: #E0F7FA;
+}
+
+/* Appliquer les couleurs globales */
+body {
+  font-family: 'Montserrat', 'Raleway', sans-serif;
+  background-color: var(--lumynis-lightblue);
+  color: var(--lumynis-blue);
+  margin: 0;
+  padding: 0;
+}
+
+/* Boutons stylés */
+button, .btn {
+  background-color: var(--lumynis-gold);
+  color: var(--lumynis-blue);
+  font-weight: bold;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease;
+}
+
+button:hover, .btn:hover {
+  background-color: #FFC700;
+  transform: scale(1.05);
+}
+
+/* Sections */
+section {
+  padding: 4rem 1rem;
+}
+
+.hero {
+  background: linear-gradient(90deg, var(--lumynis-white), var(--lumynis-lightblue));
+  text-align: center;
+}
+
+.values {
+  background-color: var(--lumynis-white);
+  color: var(--lumynis-blue);
+}
+
+.extensions {
+  background: linear-gradient(90deg, var(--lumynis-blue), var(--lumynis-gold));
+  color: var(--lumynis-white);
+}
+
+/* Header/Footer */
+header, footer {
+  background-color: var(--lumynis-blue);
+  color: var(--lumynis-white);
+}
