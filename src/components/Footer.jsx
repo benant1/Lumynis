@@ -1,6 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Footer() {
+  const [colorIndex, setColorIndex] = useState(0);
+
+  // Écouter les changements de couleur de la Navbar
+  useEffect(() => {
+    const handleColorChange = (e) => {
+      setColorIndex(e.detail.colorIndex);
+    };
+    
+    window.addEventListener('navbarColorChange', handleColorChange);
+    return () => window.removeEventListener('navbarColorChange', handleColorChange);
+  }, []);
+
+  const colors = [
+    { bg: "linear-gradient(180deg,#fff,#fbfdff)", logo: "linear-gradient(135deg,#4f46e5,#06b6d4)", btn: "linear-gradient(90deg,#4f46e5,#06b6d4)" },
+    { bg: "linear-gradient(180deg,#fff8f8,#fffbfc)", logo: "linear-gradient(135deg,#ec4899,#f43f5e)", btn: "linear-gradient(90deg,#ec4899,#f43f5e)" },
+    { bg: "linear-gradient(180deg,#f0fdf9,#f7fefb)", logo: "linear-gradient(135deg,#10b981,#14b8a6)", btn: "linear-gradient(90deg,#10b981,#14b8a6)" },
+    { bg: "linear-gradient(180deg,#fffbf0,#fffcf5)", logo: "linear-gradient(135deg,#f59e0b,#f97316)", btn: "linear-gradient(90deg,#f59e0b,#f97316)" },
+    { bg: "linear-gradient(180deg,#faf5ff,#fcf8ff)", logo: "linear-gradient(135deg,#8b5cf6,#a78bfa)", btn: "linear-gradient(90deg,#8b5cf6,#a78bfa)" },
+  ];
+
+  const currentColor = colors[colorIndex];
+
   const handleSubscribe = (e) => {
     e.preventDefault();
     const email = e.target.email?.value;
@@ -12,10 +34,10 @@ export default function Footer() {
   };
 
   return (
-    <footer className="footer-root" role="contentinfo" aria-label="Pied de page">
+    <footer className="footer-root" style={{ background: currentColor.bg }} role="contentinfo" aria-label="Pied de page">
       <div className="footer-inner">
         <div className="col brand">
-          <div className="logo">L</div>
+          <div className="logo" style={{ background: currentColor.logo }}>L</div>
           <div>
             <div className="brand-title">Lumynis</div>
             <div className="brand-sub">Design & performance</div>
@@ -46,7 +68,7 @@ export default function Footer() {
           <form onSubmit={handleSubscribe} className="subscribe" aria-label="Inscription newsletter">
             <label htmlFor="email" className="sr-only">Adresse e‑mail</label>
             <input id="email" name="email" type="email" placeholder="Votre e‑mail" required />
-            <button type="submit">S'inscrire</button>
+            <button type="submit" style={{ background: currentColor.btn }}>S'inscrire</button>
           </form>
           <div className="legal">
             <a href="/privacy">Confidentialité</a>
@@ -61,10 +83,10 @@ export default function Footer() {
 
       <style>{`
         .footer-root {
-          background: linear-gradient(180deg,#fff,#fbfdff);
           border-top: 1px solid rgba(15,23,42,0.04);
           color: #0f172a;
           margin-top: 40px;
+          transition: background 0.8s ease-in-out;
         }
         .footer-inner {
           max-width: 1200px;
@@ -78,9 +100,9 @@ export default function Footer() {
         .brand { flex-direction:row; align-items:center; gap:12px; }
         .logo {
           width:44px; height:44px; border-radius:10px;
-          background: linear-gradient(135deg,#6366f1,#60a5fa);
           color:white; display:flex; align-items:center; justify-content:center; font-weight:700;
           box-shadow: 0 10px 26px rgba(99,102,241,0.08);
+          transition: background 0.8s ease-in-out;
         }
         .brand-title { font-weight:800; }
         .brand-sub { color:#6b7280; font-size:13px; }
@@ -100,8 +122,10 @@ export default function Footer() {
           background: #fff;
         }
         .subscribe button {
-          padding:10px 14px; border-radius:10px; border:0; background:linear-gradient(90deg,#6366f1,#60a5fa); color:#fff; font-weight:700;
+          padding:10px 14px; border-radius:10px; border:0; color:#fff; font-weight:700;
           box-shadow: 0 8px 20px rgba(99,102,241,0.12);
+          cursor: pointer;
+          transition: all 0.8s ease-in-out;
         }
 
         .legal { margin-top:12px; display:flex; gap:10px; align-items:center; color:#6b7280; font-size:13px; }

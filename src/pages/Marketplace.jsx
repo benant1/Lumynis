@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function Marketplace() {
   const [posts, setPosts] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showOrderModal, setShowOrderModal] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -11,19 +13,102 @@ export default function Marketplace() {
     image: "",
     price: "",
   });
+  const [orderData, setOrderData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    message: ""
+  });
   const [comments, setComments] = useState({});
   const [newComment, setNewComment] = useState({});
-  const navigate = useNavigate();
 
-  // Charger les posts depuis localStorage au démarrage
+  const defaultLumynisPosts = [
+    {
+      id: 1,
+      title: "Interface Dashboard Analytics",
+      description: "Dashboard moderne avec graphiques interactifs et KPIs en temps réel.",
+      category: "design",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800",
+      price: "Gratuit",
+      author: "Lumynis",
+    },
+    {
+      id: 2,
+      title: "Application Mobile E-commerce",
+      description: "App mobile complète avec panier et paiement intégré.",
+      category: "app",
+      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800",
+      price: "299€",
+      author: "Lumynis",
+    },
+    {
+      id: 3,
+      title: "Site Vitrine Restaurant Gastronomique",
+      description: "Site web élégant avec réservation en ligne.",
+      category: "site",
+      image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800",
+      price: "149€",
+      author: "Lumynis",
+    },
+    {
+      id: 4,
+      title: "Packaging Produit Bio",
+      description: "Design d'emballage éco-responsable pour produits bio.",
+      category: "produit",
+      image: "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=800",
+      price: "89€",
+      author: "Lumynis",
+    },
+    {
+      id: 5,
+      title: "Système de Design Components",
+      description: "Bibliothèque complète de composants UI réutilisables.",
+      category: "design",
+      image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800",
+      price: "Gratuit",
+      author: "Lumynis",
+    },
+    {
+      id: 6,
+      title: "Application Fitness & Nutrition",
+      description: "Tracker d'activités physiques avec plans personnalisés.",
+      category: "app",
+      image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800",
+      price: "199€",
+      author: "Lumynis",
+    },
+    {
+      id: 7,
+      title: "Charte Graphique Complète",
+      description: "Identité visuelle complète avec logo et guide d'utilisation.",
+      category: "autre",
+      image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800",
+      price: "249€",
+      author: "Lumynis",
+    },
+    {
+      id: 8,
+      title: "Portfolio Créatif Interactif",
+      description: "Site portfolio avec animations fluides et galerie de projets.",
+      category: "site",
+      image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800",
+      price: "179€",
+      author: "Lumynis",
+    },
+  ];
+
   useEffect(() => {
-    const savedPosts = localStorage.getItem("marketplacePosts");
-    if (savedPosts) setPosts(JSON.parse(savedPosts));
+    const savedPosts = localStorage.getItem("userMarketplacePosts");
+    if (savedPosts) {
+      setPosts(JSON.parse(savedPosts));
+    }
   }, []);
 
-  // Sauvegarder les posts dans localStorage
   useEffect(() => {
-    localStorage.setItem("marketplacePosts", JSON.stringify(posts));
+    if (posts.length > 0) {
+      localStorage.setItem("userMarketplacePosts", JSON.stringify(posts));
+    }
   }, [posts]);
 
   const handleFormChange = (e) => {
@@ -41,14 +126,20 @@ export default function Marketplace() {
     const newPost = {
       id: Date.now(),
       ...formData,
-      author: JSON.parse(localStorage.getItem("user"))?.name || "Anonyme",
-      createdAt: new Date().toISOString(),
-      likes: 0,
+      author: "Utilisateur",
     };
 
     setPosts([newPost, ...posts]);
     setFormData({ title: "", description: "", category: "design", image: "", price: "" });
     setShowModal(false);
+    alert("Votre publication est maintenant en ligne !");
+  };
+
+  const handlePaymentSubmit = (e) => {
+    e.preventDefault();
+    alert("Paiement de 1$ effectué avec succès !");
+    setShowPaymentModal(false);
+    setShowModal(true);
   };
 
   const handleAddComment = (postId) => {
@@ -59,13 +150,30 @@ export default function Marketplace() {
     
     updatedComments[postId].push({
       id: Date.now(),
-      author: JSON.parse(localStorage.getItem("user"))?.name || "Anonyme",
+      author: "Anonyme",
       text: newComment[postId],
-      createdAt: new Date().toISOString(),
     });
 
     setComments(updatedComments);
     setNewComment(prev => ({ ...prev, [postId]: "" }));
+  };
+
+  const handleOrderClick = (post) => {
+    setSelectedPost(post);
+    setShowOrderModal(true);
+  };
+
+  const handleOrderFormChange = (e) => {
+    const { name, value } = e.target;
+    setOrderData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleOrderSubmit = (e) => {
+    e.preventDefault();
+    alert("Commande envoyée avec succès !");
+    setShowOrderModal(false);
+    setOrderData({ name: "", email: "", phone: "", address: "", message: "" });
+    setSelectedPost(null);
   };
 
   const categories = [
@@ -77,53 +185,66 @@ export default function Marketplace() {
   ];
 
   return (
-    <main className="marketplace-root" aria-labelledby="marketplace-heading">
+    <main className="marketplace-root">
       <header className="marketplace-hero">
         <div className="hero-inner">
-          <p className="eyebrow">Marketplace</p>
-          <h1 id="marketplace-heading" className="hero-title">Partagez vos créations</h1>
-          <p className="hero-lead">Publiez vos designs, produits et sites — Obtenez des retours instantanés de la communauté.</p>
-          <button className="btn primary" onClick={() => setShowModal(true)}>+ Créer une publication</button>
+          <h1>Marketplace Lumynis</h1>
+          <button className="btn primary" onClick={() => setShowPaymentModal(true)}>
+            + Créer une publication
+          </button>
         </div>
       </header>
 
-      {/* Modal de création */}
+      {showPaymentModal && (
+        <div className="modal-overlay" onClick={() => setShowPaymentModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowPaymentModal(false)}>✕</button>
+            <h2>Paiement 1$</h2>
+            <form onSubmit={handlePaymentSubmit}>
+              <input type="text" placeholder="Numéro de carte" required />
+              <button type="submit" className="btn primary">Payer</button>
+            </form>
+          </div>
+        </div>
+      )}
+
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={() => setShowModal(false)}>✕</button>
-            <h2>Partager une création</h2>
+            <h2>Nouvelle publication</h2>
             <form onSubmit={handleSubmitPost}>
               <input
                 type="text"
                 name="title"
-                placeholder="Titre de votre création"
+                placeholder="Titre"
                 value={formData.title}
                 onChange={handleFormChange}
                 required
               />
               <textarea
                 name="description"
-                placeholder="Décrivez votre création..."
+                placeholder="Description"
                 value={formData.description}
                 onChange={handleFormChange}
-                rows="4"
                 required
               />
               <select name="category" value={formData.category} onChange={handleFormChange}>
-                {categories.map(cat => <option key={cat.value} value={cat.value}>{cat.label}</option>)}
+                {categories.map(cat => (
+                  <option key={cat.value} value={cat.value}>{cat.label}</option>
+                ))}
               </select>
               <input
                 type="url"
                 name="image"
-                placeholder="URL de l'image (optionnel)"
+                placeholder="URL image"
                 value={formData.image}
                 onChange={handleFormChange}
               />
               <input
                 type="text"
                 name="price"
-                placeholder="Prix (optionnel)"
+                placeholder="Prix"
                 value={formData.price}
                 onChange={handleFormChange}
               />
@@ -133,213 +254,143 @@ export default function Marketplace() {
         </div>
       )}
 
-      {/* Grille de posts */}
-      <div className="marketplace-grid">
-        {posts.length === 0 ? (
-          <div className="empty-state">
-            <p>Aucune publication pour le moment. Soyez le premier à partager ! 🚀</p>
+      {showOrderModal && selectedPost && (
+        <div className="modal-overlay" onClick={() => setShowOrderModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setShowOrderModal(false)}>✕</button>
+            <h2>Commander: {selectedPost.title}</h2>
+            <p>Prix: {selectedPost.price}</p>
+            <form onSubmit={handleOrderSubmit}>
+              <input
+                type="text"
+                name="name"
+                placeholder="Nom complet"
+                value={orderData.name}
+                onChange={handleOrderFormChange}
+                required
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={orderData.email}
+                onChange={handleOrderFormChange}
+                required
+              />
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Téléphone"
+                value={orderData.phone}
+                onChange={handleOrderFormChange}
+                required
+              />
+              <textarea
+                name="address"
+                placeholder="Adresse"
+                value={orderData.address}
+                onChange={handleOrderFormChange}
+                required
+              />
+              <button type="submit" className="btn primary">Confirmer</button>
+            </form>
           </div>
-        ) : (
-          posts.map(post => (
-            <article key={post.id} className="post-card">
-              {post.image && <img src={post.image} alt={post.title} className="post-image" />}
-              <div className="post-body">
-                <div className="post-header">
-                  <h3>{post.title}</h3>
-                  <span className="post-category">{categories.find(c => c.value === post.category)?.label}</span>
-                </div>
-                <p className="post-description">{post.description}</p>
-                {post.price && <p className="post-price">{post.price}</p>}
-                <p className="post-author">Par {post.author}</p>
+        </div>
+      )}
 
-                {/* Section commentaires */}
-                <div className="comments-section">
-                  <h4>Commentaires ({(comments[post.id] || []).length})</h4>
-                  
-                  <div className="comments-list">
-                    {(comments[post.id] || []).map(comment => (
-                      <div key={comment.id} className="comment">
-                        <strong>{comment.author}</strong>
-                        <p>{comment.text}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="comment-input">
-                    <input
-                      type="text"
-                      placeholder="Ajouter un commentaire..."
-                      value={newComment[post.id] || ""}
-                      onChange={(e) => setNewComment(prev => ({ ...prev, [post.id]: e.target.value }))}
-                      onKeyPress={(e) => e.key === "Enter" && handleAddComment(post.id)}
-                    />
-                    <button className="btn small" onClick={() => handleAddComment(post.id)}>Commenter</button>
-                  </div>
+      <div className="marketplace-grid">
+        {defaultLumynisPosts.map(post => (
+          <article key={post.id} className="post-card">
+            {post.image && <img src={post.image} alt={post.title} />}
+            <h3>{post.title}</h3>
+            <p>{post.description}</p>
+            <p className="price">{post.price}</p>
+            <p className="author">Par {post.author}</p>
+            <button className="btn primary" onClick={() => handleOrderClick(post)}>
+              Commander
+            </button>
+            <div>
+              <h4>Commentaires ({(comments[post.id] || []).length})</h4>
+              {(comments[post.id] || []).map(comment => (
+                <div key={comment.id}>
+                  <strong>{comment.author}:</strong> {comment.text}
                 </div>
-              </div>
-            </article>
-          ))
-        )}
+              ))}
+              <input
+                type="text"
+                placeholder="Commenter"
+                value={newComment[post.id] || ""}
+                onChange={(e) => setNewComment(prev => ({ ...prev, [post.id]: e.target.value }))}
+                onKeyPress={(e) => e.key === "Enter" && handleAddComment(post.id)}
+              />
+            </div>
+          </article>
+        ))}
+
+        {posts.map(post => (
+          <article key={post.id} className="post-card">
+            {post.image && <img src={post.image} alt={post.title} />}
+            <h3>{post.title}</h3>
+            <p>{post.description}</p>
+            <p className="price">{post.price}</p>
+            <p className="author">Par {post.author}</p>
+            <button className="btn primary" onClick={() => handleOrderClick(post)}>
+              Commander
+            </button>
+          </article>
+        ))}
       </div>
 
       <style>{`
-        :root {
-          --max: 1200px;
-          --accent1: #4f46e5;
-          --accent2: #06b6d4;
-          --text: #061220;
-          --text-strong: #000000;
-          --muted: #4b5563;
-          --card: #fff;
-          --radius: 12px;
-          --shadow: 0 16px 50px rgba(16,24,40,0.06);
-        }
-
         .marketplace-root {
-          font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-          color: var(--text-strong);
-          -webkit-font-smoothing: antialiased;
+          font-family: Arial, sans-serif;
+          padding: 20px;
         }
-
-        /* HERO */
         .marketplace-hero {
-          background: linear-gradient(180deg, #f8fbff, #ffffff);
-          padding: 48px 16px;
           text-align: center;
+          margin-bottom: 30px;
         }
-        .hero-inner { max-width: 900px; margin: 0 auto; }
-        .eyebrow {
-          text-transform: uppercase;
-          color: var(--muted);
-          font-weight: 700;
-          letter-spacing: 0.12em;
-          font-size: 12px;
-          margin-bottom: 8px;
+        .hero-inner h1 {
+          margin-bottom: 20px;
         }
-        .hero-title {
-          font-size: clamp(26px, 4.5vw, 40px);
-          margin: 0 0 10px;
-          font-weight: 900;
-          line-height: 1.06;
+        .btn {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: bold;
         }
-        .hero-lead {
-          color: var(--text-strong);
-          font-size: 18px;
-          line-height: 1.7;
-          max-width: 62ch;
-          margin: 0 auto 20px;
-          font-weight: 500;
+        .btn.primary {
+          background: linear-gradient(90deg, #4f46e5, #06b6d4);
+          color: white;
         }
-
-        /* GRID */
         .marketplace-grid {
-          max-width: var(--max);
-          margin: 28px auto;
-          padding: 0 16px;
           display: grid;
-          gap: 24px;
-          grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 20px;
         }
-
-        .empty-state {
-          grid-column: 1 / -1;
-          text-align: center;
-          padding: 60px 20px;
-          color: var(--muted);
-          font-size: 18px;
-        }
-
-        /* POST CARD */
         .post-card {
-          background: var(--card);
-          border-radius: var(--radius);
-          border: 1px solid rgba(15,23,42,0.04);
-          box-shadow: var(--shadow);
-          overflow: hidden;
-          transition: transform .14s ease, box-shadow .14s ease;
+          border: 1px solid #ddd;
+          border-radius: 12px;
+          padding: 15px;
+          background: white;
         }
-        .post-card:hover { transform: translateY(-6px); box-shadow: 0 26px 60px rgba(16,24,40,0.08); }
-
-        .post-image {
+        .post-card img {
           width: 100%;
           height: 200px;
           object-fit: cover;
-          display: block;
-        }
-
-        .post-body { padding: 18px; display: flex; flex-direction: column; }
-
-        .post-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: start;
-          gap: 10px;
+          border-radius: 8px;
           margin-bottom: 10px;
         }
-        .post-header h3 { margin: 0; font-size: 17px; font-weight: 800; color: var(--text-strong); }
-        .post-category {
-          background: rgba(79,70,229,0.1);
-          color: var(--accent1);
-          padding: 4px 8px;
-          border-radius: 6px;
-          font-size: 12px;
-          font-weight: 700;
+        .price {
+          color: #4f46e5;
+          font-weight: bold;
+          font-size: 18px;
         }
-
-        .post-description { margin: 0 0 8px; color: var(--text-strong); font-size: 15px; line-height: 1.6; }
-        .post-price { margin: 0 0 8px; font-weight: 800; color: var(--accent1); font-size: 16px; }
-        .post-author { margin: 0 0 12px; color: var(--muted); font-size: 13px; font-weight: 600; }
-
-        /* COMMENTS */
-        .comments-section { border-top: 1px solid rgba(15,23,42,0.04); padding-top: 12px; margin-top: 12px; }
-        .comments-section h4 { margin: 0 0 10px; font-size: 14px; font-weight: 800; color: var(--text-strong); }
-
-        .comments-list { max-height: 200px; overflow-y: auto; margin-bottom: 10px; }
-        .comment {
-          padding: 8px;
-          background: rgba(15,23,42,0.02);
-          border-radius: 8px;
-          margin-bottom: 8px;
+        .author {
+          color: #666;
+          font-size: 14px;
         }
-        .comment strong { color: var(--text-strong); font-size: 13px; }
-        .comment p { margin: 4px 0 0; color: var(--text-strong); font-size: 13px; line-height: 1.5; }
-
-        .comment-input {
-          display: flex;
-          gap: 8px;
-        }
-        .comment-input input {
-          flex: 1;
-          padding: 8px 10px;
-          border: 1px solid rgba(15,23,42,0.1);
-          border-radius: 8px;
-          font-size: 13px;
-          color: var(--text-strong);
-        }
-        .comment-input input::placeholder { color: var(--muted); }
-
-        .btn {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          padding: 10px 16px;
-          border-radius: 10px;
-          border: none;
-          font-weight: 800;
-          cursor: pointer;
-          text-decoration: none;
-          font-size: 15px;
-          transition: all .14s ease;
-        }
-        .btn.primary {
-          color: #fff;
-          background: linear-gradient(90deg, var(--accent1), var(--accent2));
-          box-shadow: var(--shadow);
-        }
-        .btn.primary:hover { transform: translateY(-2px); }
-        .btn.small { padding: 6px 10px; font-size: 12px; }
-
-        /* MODAL */
         .modal-overlay {
           position: fixed;
           top: 0;
@@ -351,59 +402,35 @@ export default function Marketplace() {
           align-items: center;
           justify-content: center;
           z-index: 1000;
-          padding: 20px;
         }
-
         .modal-content {
-          background: #fff;
-          border-radius: 14px;
-          padding: 28px;
+          background: white;
+          padding: 30px;
+          border-radius: 12px;
           max-width: 500px;
           width: 100%;
-          box-shadow: 0 40px 80px rgba(0,0,0,0.2);
           position: relative;
         }
-
         .modal-close {
           position: absolute;
-          top: 12px;
-          right: 12px;
+          top: 10px;
+          right: 10px;
           background: none;
           border: none;
-          font-size: 20px;
+          font-size: 24px;
           cursor: pointer;
-          color: var(--muted);
         }
-
-        .modal-content h2 { margin: 0 0 16px; font-size: 20px; font-weight: 900; color: var(--text-strong); }
-
         .modal-content form {
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 10px;
         }
-
         .modal-content input,
         .modal-content textarea,
         .modal-content select {
-          padding: 10px 12px;
-          border: 1px solid rgba(15,23,42,0.1);
-          border-radius: 10px;
-          font-family: inherit;
-          font-size: 14px;
-          color: var(--text-strong);
-        }
-
-        .modal-content input:focus,
-        .modal-content textarea:focus,
-        .modal-content select:focus {
-          outline: none;
-          border-color: var(--accent1);
-          box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
-        }
-
-        @media(max-width: 768px) {
-          .marketplace-grid { grid-template-columns: 1fr; }
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
         }
       `}</style>
     </main>

@@ -3,190 +3,175 @@ import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
-    <section className="hero-root" aria-labelledby="hero-title">
-      <div className="hero-inner">
-        <div className="hero-left">
-          <div className="eyebrow">Bienvenue chez</div>
+    <section style={{ 
+      background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.03) 0%, rgba(6, 182, 212, 0.03) 100%)',
+      padding: 'clamp(2rem, 8vw, 5rem) clamp(1rem, 5vw, 1.5rem)',
+      minHeight: 'auto',
+      display: 'flex',
+      alignItems: 'center'
+    }}>
+      <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', width: '100%' }}>
+        {/* Section du haut : Texte à gauche + Image à droite */}
+        <div style={{ 
+          display: 'grid',
+          gridTemplateColumns: '1fr',
+          gap: 'clamp(2rem, 5vw, 3rem)',
+          alignItems: 'center',
+          marginBottom: 'clamp(2rem, 5vw, 3rem)'
+        }}>
+          <div style={{ order: 1 }}>
+            <p style={{ 
+              color: 'var(--primary)', 
+              fontWeight: '600', 
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              fontSize: 'clamp(0.75rem, 2vw, 0.875rem)',
+              marginBottom: '1rem'
+            }}>
+              Bienvenue au Groupe Lumynis
+            </p>
 
-          <h1 id="hero-title" className="hero-title">
-            GROUPE <span className="accent">LUMYNIS</span>
-          </h1>
+            <h1 style={{ 
+              fontSize: 'clamp(2rem, 6vw, 4rem)', 
+              fontWeight: '900',
+              lineHeight: '1.1',
+              marginBottom: '1.5rem',
+              color: 'var(--gray-900)'
+            }}>
+              Innovation <span style={{ color: 'var(--primary)' }}>•</span> Développement <span style={{ color: 'var(--primary)' }}>•</span><br/>
+              Accompagnement <span style={{ color: 'var(--primary)' }}>•</span> Excellence
+            </h1>
 
-          <p className="lead">“La lumière de l’innovation consciente.”</p>
+            <p style={{ 
+              fontSize: 'clamp(1rem, 2.5vw, 1.125rem)', 
+              color: 'var(--gray-700)',
+              lineHeight: '1.7',
+              marginBottom: '1.5rem',
+              maxWidth: '700px'
+            }}>
+              Le Groupe Lumynis est une entreprise moderne dédiée à la création de solutions innovantes dans les domaines du digital, de la formation, de l'entrepreneuriat et de l'accompagnement des entreprises.
+            </p>
 
-          <p className="desc">
-            Nous unissons design, technologie et bien‑être pour créer des expériences numériques
-            élégantes, performantes et porteuses de sens. Transformez vos idées en produits remarquables.
-          </p>
+            <p style={{ 
+              fontSize: 'clamp(1rem, 2.5vw, 1.125rem)', 
+              color: 'var(--gray-700)',
+              lineHeight: '1.7',
+              marginBottom: '1.5rem',
+              maxWidth: '700px',
+              fontWeight: '600'
+            }}>
+              Notre objectif est clair : apporter la lumière là où les autres voient des limites.
+            </p>
 
-          <div className="hero-ctas" role="region" aria-label="Actions principales">
-            <Link to="/about" className="btn primary">En savoir plus</Link>
-            <Link to="/contact" className="btn ghost">Nous contacter</Link>
+            <p style={{ 
+              fontSize: 'clamp(1rem, 2.5vw, 1.125rem)', 
+              color: 'var(--gray-700)',
+              lineHeight: '1.7',
+              marginBottom: '2rem',
+              maxWidth: '700px'
+            }}>
+              Dans un monde en constante évolution, nous aidons les particuliers, entrepreneurs et organisations à atteindre leurs objectifs grâce à des outils efficaces, des plateformes performantes et une vision centrée sur l'humain.
+            </p>
+
+            <div className="flex" style={{ gap: '1rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+              <Link to="/join" className="btn-primary">👉 Rejoignez-nous aujourd'hui</Link>
+              <Link to="/about" className="btn-outline">En savoir plus</Link>
+            </div>
+
+            <div className="flex" style={{ gap: 'clamp(1rem, 3vw, 2rem)', flexWrap: 'wrap' }}>
+              <div className="card" style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem)', display: 'inline-block' }}>
+                <div style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '800', color: 'var(--primary)' }}>200+</div>
+                <div style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)', color: 'var(--gray-600)' }}>Projets livrés</div>
+              </div>
+              <div className="card" style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem)', display: 'inline-block' }}>
+                <div style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '800', color: 'var(--primary)' }}>99.9%</div>
+                <div style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)', color: 'var(--gray-600)' }}>Disponibilité</div>
+              </div>
+              <div className="card" style={{ padding: 'clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 1.5rem)', display: 'inline-block' }}>
+                <div style={{ fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: '800', color: 'var(--primary)' }}>24h</div>
+                <div style={{ fontSize: 'clamp(0.75rem, 2vw, 0.875rem)', color: 'var(--gray-600)' }}>Support</div>
+              </div>
+            </div>
           </div>
 
-          <ul className="kpis" aria-hidden="false">
-            <li><strong>200+</strong><span>Projets livrés</span></li>
-            <li><strong>99.9%</strong><span>Disponibilité</span></li>
-            <li><strong>24h</strong><span>Support</span></li>
-          </ul>
+          {/* Image à droite du texte */}
+          <div style={{ display: 'flex', justifyContent: 'center', order: 2 }}>
+            <img 
+              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop" 
+              alt="Équipe Lumynis" 
+              style={{ 
+                width: '100%', 
+                maxWidth: '500px',
+                height: 'auto', 
+                borderRadius: 'var(--border-radius-lg)',
+                boxShadow: 'var(--shadow-2xl)'
+              }} 
+            />
+          </div>
         </div>
 
-        <div className="hero-right" aria-hidden="true">
-          <div className="device-mockup">
-            {/* Image hébergée (Unsplash) */}
-            <img
-              src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1350&q=80"
-              alt="Illustration produit — interface moderne"
-              className="hero-image"
-              loading="lazy"
-            />
-             <div className="device-shadow" />
+        {/* Section du bas : Vidéo pleine largeur */}
+        <div style={{ 
+          width: '100%',
+          borderRadius: 'var(--border-radius-lg)',
+          overflow: 'hidden',
+          boxShadow: 'var(--shadow-2xl)',
+          position: 'relative',
+          backgroundColor: '#000'
+        }}>
+          <iframe
+            width="100%"
+            height="500"
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ&controls=1"
+            title="Démonstration Lumynis"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            style={{
+              display: 'block',
+              borderRadius: 'var(--border-radius-lg)'
+            }}
+          ></iframe>
+          
+          {/* Overlay avec texte */}
+          <div style={{
+            position: 'absolute',
+            bottom: '20px',
+            left: '20px',
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(10px)',
+            padding: '12px 16px',
+            borderRadius: '10px',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+            maxWidth: '400px',
+            pointerEvents: 'none'
+          }}>
+            <div style={{ fontSize: '14px', fontWeight: '700', color: '#0f172a', marginBottom: '4px' }}>
+              🎯 Démonstration en direct
+            </div>
+            <div style={{ fontSize: '12px', color: '#6b7280' }}>
+              Découvrez nos solutions innovantes en action
+            </div>
           </div>
         </div>
       </div>
-
+      
       <style>{`
-        :root {
-          --bg: #f6f8fb;
-          --surface: #ffffff;
-          --muted: #6b7280;
-          --accent1: #6366f1;
-          --accent2: #60a5fa;
-          --radius: 14px;
-          --max: 1200px;
-          --shadow-md: 0 12px 40px rgba(16,24,40,0.08);
-        }
-
-        .hero-root {
-          background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(246,250,255,0.85));
-          padding: 44px 20px;
-        }
-
-        .hero-inner {
-          max-width: var(--max);
-          margin: 0 auto;
-          display: grid;
-          gap: 28px;
-          grid-template-columns: 1fr;
-          align-items: center;
-        }
-
-        .eyebrow {
-          color: var(--muted);
-          font-weight: 600;
-          margin-bottom: 8px;
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-          font-size: 12px;
-        }
-
-        .hero-title {
-          font-size: clamp(28px, 4.5vw, 48px);
-          line-height: 1.02;
-          margin: 0 0 12px 0;
-          font-weight: 800;
-          color: #0f172a;
-        }
-
-        .hero-title .accent {
-          background: linear-gradient(90deg, var(--accent1), var(--accent2));
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-        }
-
-        .lead {
-          color: var(--muted);
-          font-size: 18px;
-          margin: 0 0 16px 0;
-          font-weight: 600;
-        }
-
-        .desc {
-          color: #374151;
-          max-width: 62ch;
-          margin-bottom: 20px;
-        }
-
-        .hero-ctas { display:flex; gap:12px; align-items:center; margin-bottom:18px; flex-wrap:wrap; }
-        .btn {
-          display:inline-flex;
-          align-items:center;
-          justify-content:center;
-          padding: 10px 16px;
-          border-radius: 10px;
-          text-decoration:none;
-          font-weight:700;
-          font-size:14px;
-        }
-        .btn.primary {
-          color: white;
-          background: linear-gradient(90deg, var(--accent1), var(--accent2));
-          box-shadow: var(--shadow-md);
-        }
-        .btn.ghost {
-          color: #0f172a;
-          background: rgba(15,23,42,0.04);
-          border: 1px solid rgba(15,23,42,0.04);
-        }
-
-        .kpis {
-          display:flex;
-          gap:12px;
-          margin-top:12px;
-          list-style:none;
-          padding:0;
-        }
-        .kpis li {
-          background: var(--surface);
-          padding:10px 14px;
-          border-radius: 10px;
-          box-shadow: 0 8px 24px rgba(15,23,42,0.04);
-          display:flex;
-          flex-direction:column;
-          align-items:flex-start;
-        }
-        .kpis strong { font-size:16px; display:block; }
-
-        /* Right mockup */
-        .hero-right { display:flex; justify-content:center; }
-        .device-mockup { width:320px; height:220px; position:relative; border-radius:14px; overflow:hidden; }
-        .device-mockup .screen {
-          width:100%; height:100%; border-radius:14px;
-          background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(240,247,255,0.9));
-          display:flex; align-items:center; justify-content:center;
-          box-shadow: var(--shadow-md);
-          border: 1px solid rgba(15,23,42,0.04);
-        }
-        .device-shadow {
-          position:absolute; left:14px; right:14px; bottom:-18px; height:20px; border-radius:50%;
-          background: radial-gradient(closest-side, rgba(15,23,42,0.08), transparent);
-          filter: blur(10px);
-        }
-        .mock-graphic { width:88%; height:72%; opacity:0.95; }
-
-        .hero-image{
-          width:100%;
-          height:100%;
-          object-fit:cover;
-          border-radius:14px;
-          box-shadow: var(--shadow-md);
-          border: 1px solid rgba(15,23,42,0.04);
-          display:block;
-        }
-
-        /* Responsive */
-        @media(min-width:920px) {
-          .hero-inner { grid-template-columns: 1fr 420px; align-items: center; gap:36px; }
-          .hero-left { padding-right: 8px; }
-        }
-
-        @media(max-width:500px) {
-          .device-mockup { width:260px; height:160px; }
-          .kpis { flex-direction: column; }
-          .hero-image{ object-position:center top; }
+        @media (min-width: 768px) {
+          section > div > div:first-child {
+            grid-template-columns: 1fr 1fr !important;
+          }
+          
+          section > div > div:first-child > div:first-child {
+            order: 1 !important;
+          }
+          
+          section > div > div:first-child > div:last-child {
+            order: 2 !important;
+          }
         }
       `}</style>
     </section>
   );
 }
+
