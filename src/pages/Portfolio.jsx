@@ -1,7 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Portfolio() {
   const [filter, setFilter] = useState('all');
+  const [colorIndex, setColorIndex] = useState(0);
+
+  useEffect(() => {
+    const handleColorChange = (e) => {
+      setColorIndex(e.detail.colorIndex);
+    };
+    window.addEventListener('navbarColorChange', handleColorChange);
+    return () => window.removeEventListener('navbarColorChange', handleColorChange);
+  }, []);
+
+  const colors = [
+    { bg: "rgba(255,255,255,0.72)", gradient: "linear-gradient(135deg, #4f46e5, #06b6d4)", accent: "#4f46e5" },
+    { bg: "rgba(255,240,245,0.72)", gradient: "linear-gradient(135deg, #ec4899, #f43f5e)", accent: "#ec4899" },
+    { bg: "rgba(240,253,250,0.72)", gradient: "linear-gradient(135deg, #10b981, #14b8a6)", accent: "#10b981" },
+    { bg: "rgba(255,250,235,0.72)", gradient: "linear-gradient(135deg, #f59e0b, #f97316)", accent: "#f59e0b" },
+    { bg: "rgba(243,232,255,0.72)", gradient: "linear-gradient(135deg, #8b5cf6, #a78bfa)", accent: "#8b5cf6" },
+  ];
+
+  const currentColor = colors[colorIndex];
 
   const projects = [
     { id: 1, title: "Logo Entreprise Tech", category: "logo", image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=500", desc: "Logo moderne pour startup tech" },
@@ -26,24 +45,33 @@ export default function Portfolio() {
   const filteredProjects = filter === 'all' ? projects : projects.filter(p => p.category === filter);
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--gray-50)', padding: 'clamp(2rem, 5vw, 4rem) 1.5rem' }}>
+    <div style={{ minHeight: '100vh', background: currentColor.bg, padding: 'clamp(2rem, 5vw, 4rem) 1.5rem', transition: 'background 0.8s ease-in-out', backdropFilter: 'blur(6px)' }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         
         {/* Header */}
         <div style={{ 
-          background: 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)',
-          borderRadius: 'var(--border-radius-lg)',
-          padding: 'clamp(2rem, 5vw, 4rem)',
+          background: currentColor.bg,
+          borderRadius: '32px',
+          padding: 'clamp(2.5rem, 6vw, 5rem)',
           marginBottom: '3rem',
-          color: 'white',
-          textAlign: 'center'
+          color: '#18181b',
+          textAlign: 'center',
+          boxShadow: `0 20px 60px ${currentColor.accent}20`,
+          backdropFilter: 'blur(16px)',
+          border: `1.5px solid ${currentColor.bg}`,
+          position: 'relative',
+          overflow: 'hidden',
+          transition: 'all 0.8s ease-in-out'
         }}>
-          <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: '900', marginBottom: '1rem' }}>
-            🎨 Portfolio Lumynis Design
-          </h1>
-          <p style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)', opacity: 0.9, maxWidth: '700px', margin: '0 auto' }}>
-            Découvrez nos créations : logos, identités visuelles, UI/UX et animations
-          </p>
+          <div style={{ position: 'absolute', inset: 0, background: currentColor.gradient, opacity: 0.10, zIndex: 0, borderRadius: '32px', transition: 'background 0.8s ease-in-out' }} />
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', fontWeight: '900', marginBottom: '1rem', letterSpacing: '-0.03em', textShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
+              🎨 Portfolio Lumynis Design
+            </h1>
+            <p style={{ fontSize: 'clamp(1.1rem, 2vw, 1.35rem)', opacity: 0.92, maxWidth: '700px', margin: '0 auto', fontWeight: 500 }}>
+              Découvrez nos créations : logos, identités visuelles, UI/UX et animations
+            </p>
+          </div>
         </div>
 
         {/* Filtres */}
@@ -59,15 +87,30 @@ export default function Portfolio() {
               key={cat.id}
               onClick={() => setFilter(cat.id)}
               style={{
-                padding: '0.75rem 1.5rem',
-                background: filter === cat.id ? 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)' : 'white',
-                color: filter === cat.id ? 'white' : 'var(--gray-700)',
-                border: filter === cat.id ? 'none' : '2px solid #e5e7eb',
-                borderRadius: '25px',
+                padding: '0.85rem 1.8rem',
+                background: filter === cat.id ? currentColor.gradient : 'rgba(255,255,255,0.85)',
+                color: filter === cat.id ? 'white' : '#18181b',
+                border: filter === cat.id ? 'none' : '1.5px solid rgba(0,0,0,0.08)',
+                borderRadius: '28px',
                 fontWeight: '700',
                 cursor: 'pointer',
-                transition: 'all 0.3s',
-                boxShadow: filter === cat.id ? 'var(--shadow-lg)' : 'var(--shadow-sm)'
+                transition: 'all 0.8s ease',
+                boxShadow: filter === cat.id ? `0 8px 24px ${currentColor.accent}40` : '0 4px 16px rgba(0,0,0,0.06)',
+                backdropFilter: 'blur(10px)',
+                fontSize: '0.95rem',
+                letterSpacing: '-0.01em'
+              }}
+              onMouseOver={(e) => {
+                if (filter !== cat.id) {
+                  e.currentTarget.style.transform = 'translateY(-2px)';
+                  e.currentTarget.style.boxShadow = '0 8px 20px rgba(0,0,0,0.12)';
+                }
+              }}
+              onMouseOut={(e) => {
+                if (filter !== cat.id) {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.06)';
+                }
               }}
             >
               {cat.name} <span style={{ opacity: 0.7 }}>({cat.count})</span>
@@ -78,8 +121,8 @@ export default function Portfolio() {
         {/* Grille de projets */}
         <div style={{ 
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-          gap: '2rem'
+          gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+          gap: '2.5rem'
         }}>
           {filteredProjects.map(project => (
             <div
@@ -89,22 +132,30 @@ export default function Portfolio() {
                 padding: 0,
                 overflow: 'hidden',
                 cursor: 'pointer',
-                transition: 'transform 0.3s, box-shadow 0.3s',
-                animation: 'fadeIn 0.5s ease-in'
+                transition: 'transform 0.4s ease, box-shadow 0.4s ease, background 0.8s ease-in-out, border 0.8s ease-in-out',
+                animation: 'fadeIn 0.7s ease-in',
+                background: currentColor.bg,
+                backdropFilter: 'blur(12px)',
+                boxShadow: `0 8px 32px ${currentColor.accent}15`,
+                borderRadius: '24px',
+                border: `1.5px solid ${currentColor.bg}`,
+                position: 'relative'
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'translateY(-10px)';
-                e.currentTarget.style.boxShadow = 'var(--shadow-2xl)';
+                e.currentTarget.style.transform = 'translateY(-12px) scale(1.02)';
+                e.currentTarget.style.boxShadow = '0 16px 48px rgba(0,0,0,0.14)';
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.08)';
               }}
             >
               <div style={{ 
-                height: '250px', 
+                height: '240px', 
                 overflow: 'hidden',
-                background: '#f3f4f6'
+                borderTopLeftRadius: '24px',
+                borderTopRightRadius: '24px',
+                position: 'relative'
               }}>
                 <img 
                   src={project.image} 
@@ -113,17 +164,25 @@ export default function Portfolio() {
                     width: '100%', 
                     height: '100%', 
                     objectFit: 'cover',
-                    transition: 'transform 0.5s'
+                    transition: 'transform 0.5s ease'
                   }}
-                  onMouseOver={(e) => e.target.style.transform = 'scale(1.1)'}
+                  onMouseOver={(e) => e.target.style.transform = 'scale(1.08)'}
                   onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
                 />
+                <div style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  height: '40px',
+                  background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0,0,0,0.08) 100%)'
+                }} />
               </div>
-              <div style={{ padding: '1.5rem' }}>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '0.5rem' }}>
+              <div style={{ padding: '1.75rem', position: 'relative', zIndex: 1 }}>
+                <h3 style={{ fontSize: '1.28rem', fontWeight: '700', marginBottom: '0.6rem', letterSpacing: '-0.015em', color: '#18181b' }}>
                   {project.title}
                 </h3>
-                <p style={{ color: 'var(--gray-600)', fontSize: '0.9375rem' }}>
+                <p style={{ color: '#444', fontSize: '1.02rem', opacity: 0.92, fontWeight: 500, lineHeight: '1.6' }}>
                   {project.desc}
                 </p>
               </div>
@@ -133,27 +192,41 @@ export default function Portfolio() {
 
         {/* CTA */}
         <div style={{ 
-          background: 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)',
-          borderRadius: 'var(--border-radius-lg)',
-          padding: 'clamp(2rem, 5vw, 3rem)',
+          background: currentColor.bg,
+          borderRadius: '32px',
+          padding: 'clamp(2.2rem, 5vw, 3.5rem)',
           marginTop: '4rem',
-          color: 'white',
-          textAlign: 'center'
+          color: '#18181b',
+          textAlign: 'center',
+          boxShadow: `0 20px 60px ${currentColor.accent}20`,
+          backdropFilter: 'blur(16px)',
+          border: `1.5px solid ${currentColor.bg}`,
+          position: 'relative',
+          overflow: 'hidden',
+          transition: 'all 0.8s ease-in-out'
         }}>
-          <h2 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: '900', marginBottom: '1rem' }}>
-            Besoin d'un design unique? ✨
-          </h2>
-          <p style={{ fontSize: 'clamp(1rem, 2vw, 1.125rem)', marginBottom: '2rem', opacity: 0.9 }}>
-            Notre équipe est prête à donner vie à vos idées
-          </p>
-          <button className="btn-primary" style={{ 
-            background: 'white',
-            color: '#ec4899',
-            padding: '1rem 2.5rem',
-            fontSize: '1.125rem'
-          }}>
-            🚀 Démarrer un projet
-          </button>
+          <div style={{ position: 'absolute', inset: 0, background: currentColor.gradient, opacity: 0.08, zIndex: 0, borderRadius: '32px', transition: 'background 0.8s ease-in-out' }} />
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <h2 style={{ fontSize: 'clamp(1.85rem, 4vw, 2.7rem)', fontWeight: '900', marginBottom: '1rem', letterSpacing: '-0.02em', textShadow: '0 2px 10px rgba(0,0,0,0.04)' }}>
+              Besoin d'un design unique? ✨
+            </h2>
+            <p style={{ fontSize: 'clamp(1.08rem, 2vw, 1.18rem)', marginBottom: '2rem', opacity: 0.92, fontWeight: 500 }}>
+              Notre équipe est prête à donner vie à vos idées
+            </p>
+            <button className="btn-primary" style={{ 
+              background: currentColor.gradient,
+              color: 'white',
+              padding: '1rem 2.5rem',
+              fontSize: '1.125rem',
+              fontWeight: 700,
+              borderRadius: '18px',
+              boxShadow: `0 8px 32px ${currentColor.accent}25`,
+              border: 'none',
+              transition: 'all 0.8s ease-in-out'
+            }}>
+              🚀 Démarrer un projet
+            </button>
+          </div>
         </div>
 
       </div>
