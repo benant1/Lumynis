@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 export default function LumynisSpirit() {
-  const [quote, setQuote] = useState("");
-
   const quotes = [
     "La lumière de l'innovation consciente éclaire nos pas vers l'excellence.",
     "Chaque défi est une opportunité de grandir et de briller.",
@@ -11,10 +9,7 @@ export default function LumynisSpirit() {
     "Notre succès se mesure à l'impact positif que nous créons."
   ];
 
-  useEffect(() => {
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    setQuote(randomQuote);
-  }, []);
+  const [quote] = useState(() => quotes[Math.floor(Math.random() * quotes.length)]);
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--gray-50)' }}>

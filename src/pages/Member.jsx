@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 export default function Member() {
   const [colorIndex, setColorIndex] = useState(0);
-  const [user, setUser] = useState({ name: 'Utilisateur', email: 'user@lumynis.com', level: 'Silver', points: 1250 });
-  const [notifications, setNotifications] = useState([
+  const [user] = useState(() => JSON.parse(localStorage.getItem('user')) || { name: 'Utilisateur', email: 'user@lumynis.com', level: 'Silver', points: 1250 });
+  const [notifications] = useState([
     { id: 1, text: "Bienvenue sur votre espace membre!", time: "Il y a 2h", unread: true },
     { id: 2, text: "Nouveau badge débloqué: Explorateur", time: "Il y a 1j", unread: true },
     { id: 3, text: "Votre commande #1234 a été livrée", time: "Il y a 3j", unread: false }
@@ -19,11 +19,6 @@ export default function Member() {
     
     window.addEventListener('navbarColorChange', handleColorChange);
     return () => window.removeEventListener('navbarColorChange', handleColorChange);
-  }, []);
-
-  useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem('user')) || user;
-    setUser(savedUser);
   }, []);
 
   const colors = [

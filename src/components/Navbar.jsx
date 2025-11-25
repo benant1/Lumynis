@@ -1,27 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, Link, useLocation } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
 
-export default function Navbar({ onLogout }) {
+export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [colorIndex, setColorIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [divisionsOpen, setDivisionsOpen] = useState(false);
-  const location = useLocation();
 
-  // Changer de couleur toutes les 10 secondes
+  // Définir colors AVANT les useEffect
+  const colors = [
+    { bg: "rgba(255,255,255,0.72)", gradient: "linear-gradient(90deg, #4f46e5, #06b6d4)" },
+    { bg: "rgba(255,240,245,0.72)", gradient: "linear-gradient(90deg, #ec4899, #f43f5e)" },
+    { bg: "rgba(240,253,250,0.72)", gradient: "linear-gradient(90deg, #10b981, #14b8a6)" },
+    { bg: "rgba(255,250,235,0.72)", gradient: "linear-gradient(90deg, #f59e0b, #f97316)" },
+    { bg: "rgba(243,232,255,0.72)", gradient: "linear-gradient(90deg, #8b5cf6, #a78bfa)" },
+  ];
+
   useEffect(() => {
     const interval = setInterval(() => {
-      const newIndex = (colorIndex + 1) % colors.length;
-      setColorIndex(newIndex);
-      // Envoyer un événement pour synchroniser avec Home
-      window.dispatchEvent(new CustomEvent('navbarColorChange', { detail: { colorIndex: newIndex } }));
+      setColorIndex((prev) => {
+        const newIndex = (prev + 1) % colors.length;
+        // Envoyer un événement pour synchroniser avec Home
+        window.dispatchEvent(new CustomEvent('navbarColorChange', { detail: { colorIndex: newIndex } }));
+        return newIndex;
+      });
     }, 10000);
     return () => clearInterval(interval);
-  }, [colorIndex]);
+  }, [colors.length]);
 
-  useEffect(() => setOpen(false), [location.pathname]);
+  useEffect(() => {
+    const handleLocationChange = () => setOpen(false);
+    // Écouter les changements de location
+    window.addEventListener('popstate', handleLocationChange);
+    return () => window.removeEventListener('popstate', handleLocationChange);
+  }, []);
 
   useEffect(() => {
     function onKey(e) { 
@@ -82,14 +96,6 @@ export default function Navbar({ onLogout }) {
   const linkClass = ({ isActive }) =>
     "navbar-link " + (isActive ? "active" : "");
 
-  const colors = [
-    { bg: "rgba(255,255,255,0.72)", gradient: "linear-gradient(90deg, #4f46e5, #06b6d4)" },
-    { bg: "rgba(255,240,245,0.72)", gradient: "linear-gradient(90deg, #ec4899, #f43f5e)" },
-    { bg: "rgba(240,253,250,0.72)", gradient: "linear-gradient(90deg, #10b981, #14b8a6)" },
-    { bg: "rgba(255,250,235,0.72)", gradient: "linear-gradient(90deg, #f59e0b, #f97316)" },
-    { bg: "rgba(243,232,255,0.72)", gradient: "linear-gradient(90deg, #8b5cf6, #a78bfa)" },
-  ];
-
   const currentColor = colors[colorIndex];
 
   return (
@@ -129,7 +135,7 @@ export default function Navbar({ onLogout }) {
                       <div className="dropdown-item-desc">Création & Design</div>
                     </div>
                   </NavLink>
-                  <NavLink to="/market" className="dropdown-item" onClick={() => setDivisionsOpen(false)}>
+                  <NavLink to="/market" className="dropdown-item" onClick={() => { setDivisionsOpen(false); console.log('Navbar: navigate to /market'); }}>
                     <span className="dropdown-icon" style={{background: 'linear-gradient(135deg, #10B981, #14B8A6)'}}>🛒</span>
                     <div>
                       <div className="dropdown-item-title">Lumynis Market</div>
@@ -246,7 +252,7 @@ export default function Navbar({ onLogout }) {
           <div className="mobile-section-title">Nos Divisions</div>
           <NavLink to="/tech" className={linkClass} onClick={() => setOpen(false)}>💻 Lumynis Tech</NavLink>
           <NavLink to="/design" className={linkClass} onClick={() => setOpen(false)}>🎨 Lumynis Design</NavLink>
-          <NavLink to="/market" className={linkClass} onClick={() => setOpen(false)}>🛒 Lumynis Market</NavLink>
+          <NavLink to="/market" className={linkClass} onClick={() => { setOpen(false); console.log('Navbar: navigate to /market (mobile)'); }}>🛒 Lumynis Market</NavLink>
           <NavLink to="/spirit" className={linkClass} onClick={() => setOpen(false)}>✨ Lumynis Spirit</NavLink>
           
           <div className="mobile-section-title">Navigation</div>

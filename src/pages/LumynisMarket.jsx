@@ -17,6 +17,11 @@ export default function LumynisMarket() {
     return () => window.removeEventListener('navbarColorChange', handleColorChange);
   }, []);
 
+  // Debug: log when the component mounts
+  useEffect(() => {
+    console.log('LumynisMarket mounted (src/pages/LumynisMarket.jsx)');
+  }, []);
+
   const colors = [
     { bg: 'rgba(255,255,255,0.72)', accent: '#4f46e5', gradient: 'linear-gradient(90deg, #4f46e5, #06b6d4)' },
     { bg: 'rgba(255,240,245,0.72)', accent: '#ec4899', gradient: 'linear-gradient(90deg, #ec4899, #f43f5e)' },
@@ -499,11 +504,14 @@ export default function LumynisMarket() {
           /* CART MODAL */
           .cart-modal {
             position:fixed;
-            inset:0;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
             background:rgba(0,0,0,0.5);
-            z-index:100;
+            z-index:9999;
             display:flex;
-            align-items:center;
+            align-items:stretch;
             justify-content:flex-end;
             animation: fadeIn 0.2s;
           }
@@ -511,12 +519,13 @@ export default function LumynisMarket() {
 
           .cart-content {
             background:white;
-            height:100vh;
             width:100%;
             max-width:450px;
             display:flex;
             flex-direction:column;
+            box-shadow: -4px 0 20px rgba(0,0,0,0.15);
             animation: slideIn 0.3s;
+            overflow:hidden;
           }
           @keyframes slideIn { from { transform:translateX(100%); } to { transform:translateX(0); } }
 

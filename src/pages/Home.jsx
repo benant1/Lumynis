@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 function Home() {
+  console.log('🏠 HOME PAGE IS RENDERING NOW');
+  
   const [colorIndex, setColorIndex] = useState(0);
 
   // Écouter les changements de couleur de la Navbar
