@@ -119,13 +119,200 @@ function Home() {
     }
   ];
 
+  // Motivational intro rotation
+  const [promoIndex, setPromoIndex] = useState(0);
+  const promos = [
+    "Osez innover — votre idée mérite d'exister.",
+    "Construisons ensemble un futur numérique plus humain.",
+    "Passez de l'idée au produit en quelques étapes simples.",
+    "Votre succès commence par un premier pas audacieux.",
+    "Créez. Itérez. Brillez."
+  ];
+
+  useEffect(() => {
+    const id = setInterval(() => setPromoIndex(p => (p + 1) % promos.length), 3500);
+    return () => clearInterval(id);
+  }, []);
+
+  // Développement Digital: types, commentaires et Formations
+  const devTypes = [
+    {
+      id: 'vitrine',
+      title: 'Site Vitrine',
+      short: 'Présence en ligne simple et élégante',
+      desc: 'Site d’information présentant votre entreprise, services, contact et réalisations. Idéal pour visibilité et référencement.',
+      icon: '🌐'
+    },
+    {
+      id: 'ecommerce',
+      title: 'E‑commerce',
+      short: 'Boutique en ligne complète',
+      desc: 'Catalogue produit, panier, paiement en ligne, gestion des commandes et hébergement sécurisé. Adapté pour vendre en ligne.',
+      icon: '🛒'
+    },
+    {
+      id: 'pwa',
+      title: 'PWA (Progressive Web App)',
+      short: 'Application web installable',
+      desc: "Application web rapide, hors‑ligne partiel et installable sur mobile/desktop sans passer par les stores.",
+      icon: '⚡'
+    },
+    {
+      id: 'mobile',
+      title: 'Application Mobile',
+      short: 'iOS & Android natifs ou cross‑platform',
+      desc: 'Applications mobiles performantes, notifications push, accès aux capteurs et expérience native adaptée.',
+      icon: '📱'
+    },
+    {
+      id: 'webapp',
+      title: 'Application Web (SaaS)',
+      short: 'Solutions métiers et outils en ligne',
+      desc: 'Plateformes web complexes (SaaS) avec authentification, tableaux de bord, rôles et intégrations API.',
+      icon: '🧩'
+    }
+  ];
+
+  const [selectedType, setSelectedType] = useState(null);
+  const [comments, setComments] = useState({});
+  const [commentName, setCommentName] = useState('');
+  const [commentText, setCommentText] = useState('');
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('devComments');
+      if (raw) setComments(JSON.parse(raw));
+    } catch (err) {
+      console.warn('Erreur chargement commentaires:', err);
+    }
+  }, []);
+
+  const saveComments = (next) => {
+    setComments(next);
+    try {
+      localStorage.setItem('devComments', JSON.stringify(next));
+    } catch (err) {
+      console.warn('Erreur sauvegarde commentaires:', err);
+    }
+  };
+
+  const addComment = (typeId, name, text) => {
+    if (!text || !typeId) return;
+    const next = { ...comments };
+    if (!next[typeId]) next[typeId] = [];
+    next[typeId].unshift({ id: Date.now(), name: name || 'Anonyme', text });
+    saveComments(next);
+  };
+
+  // Formations & enrollments (local)
+  const formations = [
+    {
+      id: 'dev',
+      title: 'Développement & Web',
+      courses: [
+        { id: 'dev-1', title: 'Créer un Site Vitrine', duration: '4 semaines', instructor: 'Amina', price: 'Gratuit', desc: 'Apprenez HTML, CSS, et déploiement pour créer un site vitrine professionnel.' },
+        { id: 'dev-2', title: 'E‑commerce avec React', duration: '6 semaines', instructor: 'Marc', price: '50 000 FCFA', desc: 'Construire une boutique en ligne moderne avec React et gestion du panier.' },
+        { id: 'dev-3', title: 'PWA & Performance', duration: '3 semaines', instructor: 'Sofia', price: '30 000 FCFA', desc: 'Transformer une web app en PWA installable et optimiser la performance.' }
+      ]
+    },
+    {
+      id: 'design',
+      title: 'Design & Templates',
+      courses: [
+        { id: 'design-1', title: 'Design UI/UX Basics', duration: '5 semaines', instructor: 'Yves', price: '40 000 FCFA', desc: 'Principes de conception, wireframes et prototypage.' },
+        { id: 'design-2', title: 'Création de Templates', duration: '3 semaines', instructor: 'Lea', price: '25 000 FCFA', desc: 'Créer des templates responsive pour sites et landing pages.' }
+      ]
+    },
+    {
+      id: 'media',
+      title: 'Média & Communication',
+      courses: [
+        { id: 'media-1', title: 'Marketing Digital 101', duration: '4 semaines', instructor: 'Oumar', price: '35 000 FCFA', desc: 'SEO, content marketing et réseaux sociaux pour promouvoir votre site.' },
+        { id: 'media-2', title: 'Création de Contenu Vidéo', duration: '3 semaines', instructor: 'Nadia', price: '30 000 FCFA', desc: 'Techniques de tournage, montage et diffusion pour réseaux sociaux.' }
+      ]
+    },
+    {
+      id: 'consulting',
+      title: 'Consulting & Business',
+      courses: [
+        { id: 'consult-1', title: 'Stratégie digitale', duration: '4 semaines', instructor: 'Jean', price: '60 000 FCFA', desc: 'Construire une stratégie digitale adaptée à votre marché.' },
+        { id: 'consult-2', title: 'Monétisation & Business Model', duration: '2 semaines', instructor: 'Fatou', price: '20 000 FCFA', desc: 'Identifier des modèles de revenus pour votre produit numérique.' }
+      ]
+    }
+  ];
+
+  const [activeDomain, setActiveDomain] = useState('dev');
+  const [enrollments, setEnrollments] = useState({});
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('enrollments');
+      if (raw) setEnrollments(JSON.parse(raw));
+    } catch (err) {
+      console.warn('Erreur chargement enrollments:', err);
+    }
+  }, []);
+
+  const saveEnrollments = (next) => {
+    setEnrollments(next);
+    try {
+      localStorage.setItem('enrollments', JSON.stringify(next));
+    } catch (err) {
+      console.warn('Erreur sauvegarde enrollments:', err);
+    }
+  };
+
+  const toggleEnrollment = (course) => {
+    const next = { ...enrollments };
+    if (next[course.id]) {
+      delete next[course.id];
+    } else {
+      next[course.id] = { ...course, enrolledAt: Date.now() };
+    }
+    saveEnrollments(next);
+  };
+
   return (
     <div style={{ background: currentColors.bg, transition: 'background 0.8s ease-in-out' }}>
-      
+
+      {/* Motivational intro (before hero) - bordered card */}
+      <section aria-hidden style={{ padding: '1rem 1rem 0', textAlign: 'center', background: 'transparent' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: '100%', padding: '10px 14px', borderRadius: 12, border: '1px solid rgba(15,23,42,0.06)', background: 'rgba(255,255,255,0.72)', boxShadow: '0 8px 24px rgba(15,23,42,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20, flexWrap: 'wrap' }}>
+            <div style={{ padding: '8px 14px', borderRadius: 999, background: currentColors.buttonBg, color: 'white', fontWeight: 800, fontSize: '0.95rem', boxShadow: '0 6px 20px rgba(15,23,42,0.08)' }}>Motivation du jour</div>
+
+            <div aria-live="polite" style={{ position: 'relative', width: 'min(720px, 66%)', height: 32, overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {promos.map((t, i) => (
+                <div key={i} style={{
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  opacity: promoIndex === i ? 1 : 0,
+                  transform: promoIndex === i ? 'translateY(0)' : 'translateY(6px)',
+                  transition: 'opacity 420ms ease, transform 420ms ease',
+                  whiteSpace: 'nowrap',
+                  color: '#0f172a',
+                  fontWeight: 700,
+                  fontSize: '1.05rem',
+                  padding: '0 8px'
+                }}>{t}</div>
+              ))}
+            </div>
+
+            <div>
+              <Link to="/try" style={{ textDecoration: 'none', padding: '8px 14px', borderRadius: 12, background: currentColors.buttonBg, color: 'white', fontWeight: 800, boxShadow: '0 6px 20px rgba(15,23,42,0.08)' }}>Commencer</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Hero Section */}
       <section style={{ 
         background: `linear-gradient(to bottom, ${currentColors.hero}, ${currentColors.bg})`,
-        padding: 'clamp(4rem, 10vw, 8rem) clamp(1rem, 5vw, 2rem)',
+        padding: 'clamp(2rem, 6vw, 4rem) clamp(1rem, 5vw, 2rem)',
         color: '#0f172a',
         position: 'relative',
         overflow: 'hidden',
@@ -460,6 +647,130 @@ function Home() {
               Voir tous les services
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Développement Digital Section */}
+      <section style={{
+        padding: 'clamp(3rem, 6vw, 4.5rem) clamp(1rem, 5vw, 2rem)',
+        background: 'white'
+      }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <h2 style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: '900', color: '#0f172a' }}>
+              Développement Digital
+            </h2>
+            <p style={{ color: '#64748b', maxWidth: '720px', margin: '0.75rem auto 0' }}>
+              Choisissez le type de site ou d'application qui vous intéresse, découvrez nos présentations et laissez un commentaire pour nous dire ce que vous préférez.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+            {devTypes.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => { setSelectedType(t.id); setCommentName(''); setCommentText(''); }}
+                aria-pressed={selectedType === t.id}
+                style={{
+                  textAlign: 'left',
+                  padding: '1.25rem',
+                  background: selectedType === t.id ? currentColors.buttonBg : '#f8fafc',
+                  color: selectedType === t.id ? 'white' : '#0f172a',
+                  border: 'none',
+                  borderRadius: '12px',
+                  cursor: 'pointer',
+                  boxShadow: selectedType === t.id ? '0 10px 30px rgba(0,0,0,0.12)' : '0 1px 2px rgba(0,0,0,0.04)'
+                }}
+              >
+                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                  <div style={{ fontSize: '1.75rem' }}>{t.icon}</div>
+                  <div>
+                    <div style={{ fontWeight: '800', fontSize: '1.125rem' }}>{t.title}</div>
+                    <div style={{ color: selectedType === t.id ? 'rgba(255,255,255,0.9)' : '#64748b', fontSize: '0.95rem' }}>{t.short}</div>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {selectedType && (
+            <div style={{ marginTop: '1.5rem', display: 'grid', gridTemplateColumns: '1fr 360px', gap: '1rem' }}>
+              <div style={{ padding: '1.5rem', background: '#ffffff', borderRadius: '12px', boxShadow: '0 6px 20px rgba(2,6,23,0.06)' }}>
+                {(() => {
+                  const t = devTypes.find(x => x.id === selectedType);
+                  if (!t) return null;
+                  return (
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.75rem' }}>
+                        <div style={{ fontSize: '2rem' }}>{t.icon}</div>
+                        <h3 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800 }}>{t.title}</h3>
+                      </div>
+                      <p style={{ color: '#475569', lineHeight: '1.6' }}>{t.desc}</p>
+                      <div style={{ marginTop: '1rem' }}>
+                        <strong style={{ color: currentColors.accent }}>Exemples d'utilisation :</strong>
+                        <ul style={{ color: '#64748b', marginTop: '0.5rem' }}>
+                          <li>Présenter votre marque et vos services</li>
+                          <li>Vendre en ligne avec catalogue et promotion</li>
+                          <li>Proposer une application installable rapide (PWA)</li>
+                          <li>Créer un outil métier sécurisé et évolutif</li>
+                        </ul>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+
+              <aside style={{ padding: '1rem', background: '#f8fafc', borderRadius: '12px' }}>
+                <div style={{ fontWeight: 800, marginBottom: '0.5rem' }}>Commentaires</div>
+                <div style={{ marginBottom: '0.75rem', color: '#475569' }}>Dites-nous quel type vous plaît ou posez une question courte.</div>
+
+                <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                  <input
+                    aria-label="Votre nom (optionnel)"
+                    value={commentName}
+                    onChange={(e) => setCommentName(e.target.value)}
+                    placeholder="Votre nom"
+                    style={{ flex: 1, padding: '0.5rem', borderRadius: '8px', border: '1px solid #e6eef6' }}
+                  />
+                </div>
+
+                <div style={{ marginBottom: '0.5rem' }}>
+                  <textarea
+                    aria-label="Votre commentaire"
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                    placeholder="Ex: J'aime les PWA car elles sont rapides..."
+                    rows={3}
+                    style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid #e6eef6' }}
+                  />
+                </div>
+
+                <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                  <button
+                    onClick={() => { setSelectedType(null); }}
+                    style={{ padding: '0.5rem 0.75rem', borderRadius: '8px', background: 'transparent', border: '1px solid #e2e8f0', cursor: 'pointer' }}
+                  >Annuler</button>
+                  <button
+                    onClick={() => { addComment(selectedType, commentName, commentText); setCommentText(''); setCommentName(''); }}
+                    style={{ padding: '0.5rem 0.75rem', borderRadius: '8px', background: currentColors.buttonBg, color: 'white', border: 'none', cursor: 'pointer' }}
+                  >Envoyer</button>
+                </div>
+
+                <div style={{ marginTop: '1rem', maxHeight: '220px', overflow: 'auto' }}>
+                  {(comments[selectedType] || []).length === 0 && (
+                    <div style={{ color: '#94a3b8' }}>Pas encore de commentaires — soyez le premier.</div>
+                  )}
+
+                  {(comments[selectedType] || []).map(c => (
+                    <div key={c.id} style={{ padding: '0.5rem', background: 'white', borderRadius: '8px', marginTop: '0.5rem', border: '1px solid #eef2ff' }}>
+                      <div style={{ fontWeight: 700, fontSize: '0.95rem' }}>{c.name}</div>
+                      <div style={{ color: '#475569', fontSize: '0.95rem' }}>{c.text}</div>
+                    </div>
+                  ))}
+                </div>
+              </aside>
+            </div>
+          )}
         </div>
       </section>
 
