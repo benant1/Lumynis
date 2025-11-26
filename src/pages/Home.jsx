@@ -21,31 +21,31 @@ function Home() {
       hero: 'linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%)',
       bg: 'rgba(240, 243, 255, 0.6)',
       accent: '#4f46e5',
-      buttonBg: 'linear-gradient(90deg, #4f46e5, #06b6d4)',
+      buttonBg: 'linear-gradient(90deg, #4f46e5, #06b6d4)'
     },
     { 
       hero: 'linear-gradient(135deg, rgba(236, 72, 153, 0.05) 0%, rgba(244, 63, 94, 0.05) 100%)',
       bg: 'rgba(255, 240, 245, 0.6)',
       accent: '#ec4899',
-      buttonBg: 'linear-gradient(90deg, #ec4899, #f43f5e)',
+      buttonBg: 'linear-gradient(90deg, #ec4899, #f43f5e)'
     },
     { 
       hero: 'linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(20, 184, 166, 0.05) 100%)',
       bg: 'rgba(240, 253, 250, 0.6)',
       accent: '#10b981',
-      buttonBg: 'linear-gradient(90deg, #10b981, #14b8a6)',
+      buttonBg: 'linear-gradient(90deg, #10b981, #14b8a6)'
     },
     { 
       hero: 'linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(249, 115, 22, 0.05) 100%)',
       bg: 'rgba(255, 250, 235, 0.6)',
       accent: '#f59e0b',
-      buttonBg: 'linear-gradient(90deg, #f59e0b, #f97316)',
+      buttonBg: 'linear-gradient(90deg, #f59e0b, #f97316)'
     },
     { 
       hero: 'linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(167, 139, 250, 0.05) 100%)',
       bg: 'rgba(243, 232, 255, 0.6)',
       accent: '#8b5cf6',
-      buttonBg: 'linear-gradient(90deg, #8b5cf6, #a78bfa)',
+      buttonBg: 'linear-gradient(90deg, #8b5cf6, #a78bfa)'
     }
   ];
 
@@ -276,14 +276,14 @@ function Home() {
     <div style={{ background: currentColors.bg, transition: 'background 0.8s ease-in-out' }}>
 
       {/* Motivational intro (before hero) - bordered card */}
-      <section aria-hidden style={{ padding: '1rem 1rem 0', textAlign: 'center', background: 'transparent' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', justifyContent: 'center' }}>
-          <div style={{ width: '100%', padding: '10px 14px', borderRadius: 12, border: '1px solid rgba(15,23,42,0.06)', background: 'rgba(255,255,255,0.72)', boxShadow: '0 8px 24px rgba(15,23,42,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20, flexWrap: 'wrap' }}>
-            <div style={{ padding: '8px 14px', borderRadius: 999, background: currentColors.buttonBg, color: 'white', fontWeight: 800, fontSize: '0.95rem', boxShadow: '0 6px 20px rgba(15,23,42,0.08)' }}>Motivation du jour</div>
+      <section aria-hidden className="intro-card" style={{ padding: '1rem 1rem 0', textAlign: 'center', background: 'transparent' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', justifyContent: 'center', padding: '0 0.5rem' }}>
+          <div className="intro-card-inner" style={{ width: '100%', padding: '10px 14px', borderRadius: 12, border: '1px solid rgba(15,23,42,0.06)', background: 'rgba(255,255,255,0.72)', boxShadow: '0 8px 24px rgba(15,23,42,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 20, flexWrap: 'wrap' }}>
+            <div className="intro-badge" style={{ padding: '8px 14px', borderRadius: 999, background: currentColors.buttonBg, color: 'white', fontWeight: 800, fontSize: '0.95rem', boxShadow: '0 6px 20px rgba(15,23,42,0.08)', whiteSpace: 'nowrap' }}>Motivation du jour</div>
 
-            <div aria-live="polite" style={{ position: 'relative', width: 'min(720px, 66%)', height: 32, overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div aria-live="polite" className="intro-text-container" style={{ position: 'relative', width: 'min(720px, 66%)', height: 'auto', minHeight: 32, overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0.25rem 0.5rem' }}>
               {promos.map((t, i) => (
-                <div key={i} style={{
+                <div key={i} className="intro-text" style={{
                   position: 'absolute',
                   left: 0,
                   right: 0,
@@ -293,24 +293,25 @@ function Home() {
                   opacity: promoIndex === i ? 1 : 0,
                   transform: promoIndex === i ? 'translateY(0)' : 'translateY(6px)',
                   transition: 'opacity 420ms ease, transform 420ms ease',
-                  whiteSpace: 'nowrap',
                   color: '#0f172a',
                   fontWeight: 700,
                   fontSize: '1.05rem',
-                  padding: '0 8px'
+                  padding: '0 8px',
+                  textAlign: 'center',
+                  lineHeight: 1.3
                 }}>{t}</div>
               ))}
             </div>
 
-            <div>
-              <Link to="/try" style={{ textDecoration: 'none', padding: '8px 14px', borderRadius: 12, background: currentColors.buttonBg, color: 'white', fontWeight: 800, boxShadow: '0 6px 20px rgba(15,23,42,0.08)' }}>Commencer</Link>
+            <div className="intro-cta">
+              <Link to="/try" style={{ textDecoration: 'none', padding: '8px 14px', borderRadius: 12, background: currentColors.buttonBg, color: 'white', fontWeight: 800, boxShadow: '0 6px 20px rgba(15,23,42,0.08)', whiteSpace: 'nowrap', display: 'inline-block' }}>Commencer</Link>
             </div>
           </div>
         </div>
       </section>
 
       {/* Hero Section */}
-      <section style={{ 
+      <section className="home-hero" style={{ 
         background: `linear-gradient(to bottom, ${currentColors.hero}, ${currentColors.bg})`,
         padding: 'clamp(2rem, 6vw, 4rem) clamp(1rem, 5vw, 2rem)',
         color: '#0f172a',
@@ -329,7 +330,7 @@ function Home() {
         }}></div>
         
         <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <div style={{ 
+          <div className="hero-grid" style={{ 
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
             gap: 'clamp(2rem, 5vw, 4rem)',
@@ -473,7 +474,7 @@ function Home() {
       </section>
 
       {/* Features Grid */}
-      <section style={{ 
+      <section className="features-grid" style={{ 
         padding: 'clamp(4rem, 8vw, 6rem) clamp(1rem, 5vw, 2rem)',
         background: currentColors.bg,
         transition: 'background 0.8s ease-in-out'
@@ -565,7 +566,7 @@ function Home() {
       </section>
 
       {/* Services Section */}
-      <section style={{ 
+      <section className="services-section" style={{ 
         padding: 'clamp(4rem, 8vw, 6rem) clamp(1rem, 5vw, 2rem)',
         background: 'white'
       }}>
@@ -651,7 +652,7 @@ function Home() {
       </section>
 
       {/* Développement Digital Section */}
-      <section style={{
+      <section className="dev-section" style={{
         padding: 'clamp(3rem, 6vw, 4.5rem) clamp(1rem, 5vw, 2rem)',
         background: 'white'
       }}>
@@ -665,7 +666,7 @@ function Home() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+          <div className="dev-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
             {devTypes.map((t) => (
               <button
                 key={t.id}
@@ -693,9 +694,9 @@ function Home() {
             ))}
           </div>
 
-          {selectedType && (
+            {selectedType && (
             <div style={{ marginTop: '1.5rem', display: 'grid', gridTemplateColumns: '1fr 360px', gap: '1rem' }}>
-              <div style={{ padding: '1.5rem', background: '#ffffff', borderRadius: '12px', boxShadow: '0 6px 20px rgba(2,6,23,0.06)' }}>
+              <div className="selected-panel" style={{ padding: '1.5rem', background: '#ffffff', borderRadius: '12px', boxShadow: '0 6px 20px rgba(2,6,23,0.06)' }}>
                 {(() => {
                   const t = devTypes.find(x => x.id === selectedType);
                   if (!t) return null;
@@ -839,9 +840,207 @@ function Home() {
       </section>
 
       <style>{`
+        /* Medium screens */
+        @media (max-width: 1024px) {
+          .hero-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+          .home-hero { padding: clamp(1.5rem, 4vw, 3rem) 1rem !important; }
+        }
+
+        /* Small screens - mobile optimizations */
         @media (max-width: 768px) {
-          section > div > div:first-child {
+          /* Global fixes for text overflow */
+          * {
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            hyphens: auto;
+          }
+
+          /* Container padding */
+          .home-hero, .features-grid, .services-section, .dev-section {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+          }
+
+          .home-hero { 
+            padding-top: 2rem !important; 
+            padding-bottom: 2rem !important; 
+          }
+
+          /* Hero layout */
+          .hero-grid { 
+            grid-template-columns: 1fr !important; 
+            gap: 1.5rem !important; 
+          }
+
+          .hero-grid > div:first-child {
+            text-align: center;
+          }
+
+          /* Typography fixes - prevent text cut off */
+          .hero-grid h1 {
+            font-size: clamp(1.75rem, 7vw, 2.5rem) !important;
+            line-height: 1.15 !important;
+            margin-bottom: 1rem !important;
+          }
+
+          .hero-grid p {
+            font-size: clamp(0.95rem, 4vw, 1.125rem) !important;
+            line-height: 1.5 !important;
+          }
+
+          h2 {
+            font-size: clamp(1.5rem, 6vw, 2rem) !important;
+            line-height: 1.2 !important;
+          }
+
+          h3 {
+            font-size: clamp(1.125rem, 5vw, 1.375rem) !important;
+            line-height: 1.3 !important;
+          }
+
+          /* Stats row stack vertically */
+          .hero-grid > div:first-child > div:last-child {
+            flex-direction: column !important;
+            gap: 1.25rem !important;
+            align-items: center !important;
+          }
+
+          /* Hero image */
+          .hero-grid img { 
+            max-height: 280px !important; 
+            border-radius: 14px !important; 
+            width: 100% !important;
+            object-fit: cover !important;
+          }
+
+          .hero-grid > div:last-child > div {
+            max-width: 100% !important;
+            padding: 1.5rem !important;
+          }
+
+          /* Intro card mobile fix */
+          .intro-card {
+            padding: 0.75rem 0.5rem 0 !important;
+          }
+
+          .intro-card-inner {
+            flex-direction: column !important;
+            gap: 0.75rem !important;
+            padding: 0.875rem 0.75rem !important;
+          }
+
+          .intro-badge {
+            font-size: 0.875rem !important;
+          }
+
+          .intro-text-container {
+            width: 100% !important;
+            min-height: 48px !important;
+            padding: 0.25rem 0.5rem !important;
+          }
+
+          .intro-text {
+            font-size: 0.875rem !important;
+            line-height: 1.4 !important;
+            white-space: normal !important;
+            padding: 0.25rem 0.5rem !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+          }
+
+          .intro-cta a {
+            font-size: 0.875rem !important;
+            padding: 0.75rem 1.25rem !important;
+            width: 100%;
+            display: block;
+            box-sizing: border-box;
+          }
+
+          /* Buttons full width */
+          .home-hero a,
+          .intro-card a,
+          .dev-section button:not(.dev-grid button) {
+            width: 100% !important;
+            display: block !important;
+            text-align: center !important;
+            margin-bottom: 0.5rem !important;
+            padding: 0.875rem 1.5rem !important;
+          }
+
+          /* Features and Services */
+          .features-grid, .services-section { 
+            padding-top: 2.5rem !important; 
+            padding-bottom: 2.5rem !important; 
+          }
+
+          .features-grid > div > div:last-child,
+          .services-section > div > div:last-child {
             grid-template-columns: 1fr !important;
+            gap: 1.5rem !important;
+          }
+
+          /* Dev section */
+          .dev-section { 
+            padding-top: 2rem !important; 
+            padding-bottom: 2rem !important; 
+          }
+
+          .dev-grid { 
+            grid-template-columns: 1fr !important; 
+          }
+
+          .dev-section > div > div:nth-child(3) {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+          }
+
+          .dev-section aside {
+            width: 100% !important;
+          }
+
+          /* Form inputs - prevent zoom on iOS */
+          .dev-section input,
+          .dev-section textarea {
+            font-size: 16px !important;
+            padding: 0.75rem !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+          }
+
+          .dev-section button {
+            font-size: 15px !important;
+            padding: 0.75rem 1.25rem !important;
+          }
+
+          /* CTA section */
+          section:last-of-type > div > div:last-child {
+            flex-direction: column !important;
+            gap: 1rem !important;
+          }
+
+          section:last-of-type a {
+            width: 100% !important;
+          }
+        }
+
+        /* Very small devices */
+        @media (max-width: 480px) {
+          .home-hero, .features-grid, .services-section, .dev-section {
+            padding-left: 0.75rem !important;
+            padding-right: 0.75rem !important;
+          }
+
+          .hero-grid h1 {
+            font-size: 1.625rem !important;
+          }
+
+          .hero-grid img { 
+            max-height: 220px !important; 
+          }
+
+          .intro-card {
+            padding-left: 0.5rem !important;
+            padding-right: 0.5rem !important;
           }
         }
       `}</style>

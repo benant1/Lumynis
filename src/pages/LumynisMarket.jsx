@@ -228,11 +228,22 @@ export default function LumynisMarket() {
     }}>
       <main className="market-root" aria-labelledby="market-heading">
         {/* Hero */}
-        <header className="market-hero">
+        <header className="market-hero" style={{
+          background: currentColor.bg,
+          backdropFilter: 'blur(8px)',
+          WebkitBackdropFilter: 'blur(8px)',
+          borderBottom: `4px solid ${currentColor.accent}`,
+          transition: 'background 0.8s ease-in-out'
+        }}>
           <div className="hero-inner">
             <div className="hero-copy">
               <p className="eyebrow">Lumynis Market</p>
-              <h1 id="market-heading" className="hero-title">Votre boutique digitale de référence</h1>
+              <h1 id="market-heading" className="hero-title" style={{
+                background: currentColor.gradient,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                fontWeight: 900
+              }}>Votre boutique digitale de référence</h1>
               <p className="hero-lead">
                 Formations, templates, logiciels et services premium pour propulser vos projets. 
                 Paiement sécurisé et livraison instantanée.
@@ -324,7 +335,14 @@ export default function LumynisMarket() {
         )}
 
         {/* Catégories */}
-        <section className="categories-section">
+        <section className="categories-section" style={{
+          background: currentColor.bg,
+          backdropFilter: 'blur(6px)',
+          WebkitBackdropFilter: 'blur(6px)',
+          borderTop: `1px solid ${currentColor.accent}22`,
+          borderBottom: `1px solid ${currentColor.accent}22`,
+          transition: 'background 0.8s ease-in-out'
+        }}>
           <div className="categories-scroll">
             {categories.map(cat => (
               <button
@@ -345,9 +363,22 @@ export default function LumynisMarket() {
         </section>
 
         {/* Produits */}
-        <section className="products-section">
+        <section className="products-section" style={{
+          background: currentColor.bg,
+          backdropFilter: 'blur(6px)',
+          WebkitBackdropFilter: 'blur(6px)',
+          borderTop: `1px solid ${currentColor.accent}22`,
+          borderBottom: `1px solid ${currentColor.accent}22`,
+          transition: 'background 0.8s ease-in-out'
+        }}>
           <div className="products-header">
-            <h2>{categories.find(c => c.id === selectedCategory)?.name || "Tous les produits"}</h2>
+            <h2 style={{
+              background: currentColor.gradient,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              fontWeight: 800,
+              margin: 0
+            }}>{categories.find(c => c.id === selectedCategory)?.name || "Tous les produits"}</h2>
             <p>{filteredProducts.length} produit{filteredProducts.length > 1 ? 's' : ''} disponible{filteredProducts.length > 1 ? 's' : ''}</p>
           </div>
 
@@ -398,7 +429,13 @@ export default function LumynisMarket() {
         </section>
 
         {/* Paiement */}
-        <section className="payment-section">
+        <section className="payment-section" style={{
+          background: currentColor.bg,
+          backdropFilter: 'blur(6px)',
+          WebkitBackdropFilter: 'blur(6px)',
+          borderTop: `1px solid ${currentColor.accent}22`,
+          transition: 'background 0.8s ease-in-out'
+        }}>
           <h2>Moyens de paiement sécurisés</h2>
           <div className="payment-methods">
             <div className="payment-method">
@@ -425,7 +462,13 @@ export default function LumynisMarket() {
         </section>
 
         {/* CTA */}
-        <section className="market-cta">
+        <section className="market-cta" style={{
+          background: currentColor.bg,
+          backdropFilter: 'blur(6px)',
+          WebkitBackdropFilter: 'blur(6px)',
+          borderTop: `1px solid ${currentColor.accent}22`,
+          transition: 'background 0.8s ease-in-out'
+        }}>
           <div className="cta-inner">
             <h3>Besoin d'aide pour choisir ?</h3>
             <p className="muted">Notre équipe est là pour vous conseiller et répondre à toutes vos questions</p>
